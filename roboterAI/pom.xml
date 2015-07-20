@@ -66,5 +66,12 @@
 			<artifactId>asm</artifactId>
 			<version>3.3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>zaip</groupId>
+			<artifactId>zaip</artifactId>
+				<systemPath>${basedir}/META-INF/resources/META-INF/zaip.jar</systemPath>
+			<scope>system</scope>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 </project>
