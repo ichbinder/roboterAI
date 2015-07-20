@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import client.Client;
+import client.IClient;
+import client.agent.RandomAgent;
+
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
@@ -42,6 +46,21 @@ public class CmdTest
 					System.out.println("Server Starded!");
 				}	if (so.getHelp() == true)
 					cmd.usage();
+			} else if(arge.get(0).equals("test"))
+			{
+				ClientOptions opt = new ClientOptions();
+				JCommander cmd = CmdTest.cmdPaser(arge, opt);
+				
+				IClient NewClient = null;
+				
+				NewClient = new Client("Random 1", new RandomAgent());
+				NewClient.ConnectToLocalhost();
+				NewClient = new Client("Random 2", new RandomAgent());
+				NewClient.ConnectToLocalhost();
+				NewClient = new Client("Random 3", new RandomAgent());
+				NewClient.ConnectToLocalhost();
+				NewClient = new Client("Random 4", new RandomAgent());
+				NewClient.ConnectToLocalhost();
 			}
 			
 		} while (!arge.get(0).equals("end"));
