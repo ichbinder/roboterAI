@@ -54,13 +54,13 @@ public class CmdTest
 				IClient NewClient = null;
 				
 				NewClient = new Client("Random 1", new RandomAgent());
-				NewClient.ConnectToLocalhost();
+				NewClient.Connect("141.45.206.224");
 				NewClient = new Client("Random 2", new RandomAgent());
-				NewClient.ConnectToLocalhost();
+				NewClient.Connect("141.45.206.224");
 				NewClient = new Client("Random 3", new RandomAgent());
-				NewClient.ConnectToLocalhost();
+				NewClient.Connect("141.45.206.224");
 				NewClient = new Client("Random 4", new RandomAgent());
-				NewClient.ConnectToLocalhost();
+				NewClient.Connect("141.45.206.224");
 			}
 			
 		} while (!arge.get(0).equals("end"));
