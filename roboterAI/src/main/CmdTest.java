@@ -10,6 +10,7 @@ import java.util.List;
 import client.Client;
 import client.IClient;
 import client.agent.RandomAgent;
+import client.agent.SteadyAgent;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -55,11 +56,11 @@ public class CmdTest
 				
 				NewClient = new Client("Random 1", new RandomAgent());
 				NewClient.ConnectToLocalhost();
-				NewClient = new Client("Random 2", new RandomAgent());
+				NewClient = new Client("Steady 1", new SteadyAgent());
 				NewClient.ConnectToLocalhost();
-				NewClient = new Client("Random 3", new RandomAgent());
+				NewClient = new Client("Steady 2", new SteadyAgent());
 				NewClient.ConnectToLocalhost();
-				NewClient = new Client("Random 4", new RandomAgent());
+				NewClient = new Client("Steady 3", new SteadyAgent());
 				NewClient.ConnectToLocalhost();
 			}
 			
