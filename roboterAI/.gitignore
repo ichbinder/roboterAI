@@ -64,3 +64,6 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 
+#Exclude zaip from ignore
+!META-INF/resources/META-INF/zaip.jar
+!META-INF/resources/META-INF/lib/lwjgl.jar
