@@ -2,6 +2,7 @@ package client;
 
 import lenz.htw.zaip.net.NetworkClient;
 import client.agent.IAgent;
+import client.game.Map;
 
 public class Client implements IClient, Runnable {
 	
@@ -10,6 +11,7 @@ public class Client implements IClient, Runnable {
 	private NetworkClient GameSocket = null;
 	private Thread ClientThread = null;
 	private int PlayerID = 0;
+	private Map map;
 	
 	private IAgent Agent;
 	
@@ -41,6 +43,7 @@ public class Client implements IClient, Runnable {
 		PlayerID = GameSocket.getMyPlayerNumber();
 		
 		Agent.Setup(GameSocket);
+		this.map = new Map(GameSocket);
 	}
 	
 	private void Loop()
