@@ -30,7 +30,7 @@ public class Client implements IClient, Runnable {
 	}
 	
 	public void ConnectToLocalhost() {
-		Connect(null);
+		Connect("192.168.1.199");
 	}
 
 	public void Connect(String Server) {
@@ -52,6 +52,13 @@ public class Client implements IClient, Runnable {
 		
 		Agent.Setup(GameSocket);
 		this.map = new Map(GameSocket);
+		
+		map.Setup();
+		
+		if(Verbose)
+		{
+			map.PrintMap();
+		}
 	}
 	
 	private void Loop()
