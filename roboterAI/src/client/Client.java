@@ -15,6 +15,14 @@ public class Client implements IClient, Runnable {
 	
 	private IAgent Agent;
 	
+	private boolean Verbose = false;
+	
+	public Client(String Name, IAgent Agent, boolean Verbose)
+	{
+		this(Name, Agent);
+		this.Verbose = Verbose;
+	}
+	
 	public Client(String Name, IAgent Agent)
 	{
 		this.Name = Name;

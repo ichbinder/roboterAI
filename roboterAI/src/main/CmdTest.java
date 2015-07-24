@@ -54,7 +54,7 @@ public class CmdTest
 				
 				IClient NewClient = null;
 				
-				NewClient = new Client("Random 1", new RandomAgent());
+				NewClient = new Client("Random 1", new RandomAgent(), true);
 				NewClient.ConnectToLocalhost();
 				NewClient = new Client("Steady 1", new SteadyAgent());
 				NewClient.ConnectToLocalhost();
