@@ -12,63 +12,91 @@ public class Map {
 	
 	final int MAP_SIZE = 32;
 	
-	private int[][] map = new int[MAP_SIZE][MAP_SIZE];
+	private int[][] Map = new int[MAP_SIZE][MAP_SIZE];
 	private NetworkClient gameSocket;
+	private boolean Verbose;
 	
-	public Map(NetworkClient gameSocket) {
-		this.gameSocket = gameSocket;	
+	public Map(NetworkClient gameSocket, boolean Verbose) {
+		this.gameSocket = gameSocket;
+		this.Verbose = Verbose;
 	}
 	
 	public void Setup()
 	{
-		GetMapFromServer();
-		CancelOutEdges();
-		//CancelOutInefficentTiles
+		SetupMap();
 	}
 	
-	private void GetMapFromServer()
+	private void SetupMap()
+	{
+		InitMap();
+		FloodFillMap(GetMapFromServer());
+	}
+	
+	private void InitMap()
 	{
 		for (int i = 0; i < MAP_SIZE; i++) {
 			for (int j = 0; j < MAP_SIZE; j++) {
-				map[i][j] = this.gameSocket.getBoard(i, j);
+				Map[i][j] = -1;
 			}
 		}
 	}
 	
-	private void CancelOutEdges()
+	private int[][] GetMapFromServer()
 	{
-		FloodFill(new Vector2Int(0,0));
-		FloodFill(new Vector2Int(MAP_SIZE - 1,0));
-		FloodFill(new Vector2Int(0, MAP_SIZE - 1));
-		FloodFill(new Vector2Int(MAP_SIZE - 1, MAP_SIZE - 1));
+		int[][] ServerMap = new int[MAP_SIZE][MAP_SIZE];
+		for (int i = 0; i < MAP_SIZE; i++) {
+			for (int j = 0; j < MAP_SIZE; j++) {
+				ServerMap[i][j] = gameSocket.getBoard(i, j);
+			}
+		}
+		
+		return ServerMap;
 	}
 	
-	private void FloodFill(Vector2Int Start)
+	private void FloodFillMap(int[][] ServerMap)
 	{
 		Queue<Vector2Int> Queue = new LinkedList<Vector2Int>();
+		Vector2Int ValidStart = GetValidStart(ServerMap);
 		Vector2Int CurrentField;
 		
-		Queue.add(Start);
+		Queue.add(ValidStart);
 		
 		while((CurrentField = Queue.poll()) != null)
 		{
-			if(map[CurrentField.X][CurrentField.Y] != -1)
-			{
-				map[CurrentField.X][CurrentField.Y] = -1;
-				AddToFloodFillQueue(Queue, CurrentField.Add(Vector2Int.Up));
-				AddToFloodFillQueue(Queue, CurrentField.Add(Vector2Int.Down));
-				AddToFloodFillQueue(Queue, CurrentField.Add(Vector2Int.Left));
-				AddToFloodFillQueue(Queue, CurrentField.Add(Vector2Int.Right));	
+			if(NotFilled(ServerMap, CurrentField))
+			{	
+				Map[CurrentField.X][CurrentField.Y] = 0;
+				AddToFloodFillQueue(Queue, ServerMap, CurrentField.Add(Vector2Int.Up));
+				AddToFloodFillQueue(Queue, ServerMap, CurrentField.Add(Vector2Int.Down));
+				AddToFloodFillQueue(Queue, ServerMap, CurrentField.Add(Vector2Int.Left));
+				AddToFloodFillQueue(Queue, ServerMap, CurrentField.Add(Vector2Int.Right));	
 			}
-			
 		}
 	}
 	
-	private void AddToFloodFillQueue(Queue<Vector2Int> Queue, Vector2Int Field)
+	private Vector2Int GetValidStart(int[][] ServerMap)
+	{
+		Vector2Int Middle = new Vector2Int(MAP_SIZE/2, MAP_SIZE/2);
+		Vector2Int CurrentField = Middle;
+		
+		while(ServerMap[CurrentField.X][CurrentField.Y] != 0)
+		{
+			CurrentField = CurrentField.Add(Vector2Int.Up);
+		}
+		
+		return CurrentField;
+	}
+	
+	private boolean NotFilled(int[][] ServerMap, Vector2Int Field)
+	{
+		return (ServerMap[Field.X][Field.Y] != -1) && (Map[Field.X][Field.Y] == -1);
+	}
+	
+	private void AddToFloodFillQueue(Queue<Vector2Int> Queue, int[][] ServerMap, Vector2Int Field)
 	{
 		if((Field.X >= 0) && (Field.X < MAP_SIZE) && (Field.Y >= 0) && (Field.Y < MAP_SIZE))
 		{
-			if(map[Field.X][Field.Y] != -1)
+			if(NotFilled(ServerMap, Field))
 			{
 				Queue.add(Field);
 			}
@@ -77,11 +105,16 @@ public class Map {
 	
 	public void PrintMap()
 	{
+		PrintMap(Map);
+	}
+	
+	private void PrintMap(int[][] Map)
+	{
 		String zeile = "";
 		for (int i = 0; i < MAP_SIZE; i++) {
 			zeile = "";
 			for (int j = 0; j < MAP_SIZE; j++) {
-				if(map[i][j] < 0) {
+				if(Map[i][j] < 0) {
 					zeile += " -1";
 				} else {
 					zeile += "  0";

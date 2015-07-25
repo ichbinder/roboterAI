@@ -47,4 +47,9 @@ public class Vector2Int {
 	{
 		return new Vector2Int(this.X + other.X, this.Y + other.Y);
 	}
+	
+	public String toString()
+	{
+		return "(" + X + ", " + Y + ")";
+	}
 }

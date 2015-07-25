@@ -2,16 +2,19 @@ package client.agent;
 
 import java.util.Random;
 
+import client.game.Map;
 import lenz.htw.zaip.net.NetworkClient;
 
 public class RandomAgent implements IAgent {
 	
 	private NetworkClient GameSocket = null;
+	private Map Map = null;;
 	private Random Random = new Random();
 	
-	public void Setup(NetworkClient GameSocket)
+	public void Setup(NetworkClient GameSocket, Map Map)
 	{
 		this.GameSocket = GameSocket;
+		this.Map = Map;
 	}
 	
 	public void Tick() 

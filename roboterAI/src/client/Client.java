@@ -11,7 +11,7 @@ public class Client implements IClient, Runnable {
 	private NetworkClient GameSocket = null;
 	private Thread ClientThread = null;
 	private int PlayerID = 0;
-	private Map map;
+	private Map Map;
 	
 	private IAgent Agent;
 	
@@ -50,14 +50,14 @@ public class Client implements IClient, Runnable {
 		GameSocket = new NetworkClient(Server, Name);
 		PlayerID = GameSocket.getMyPlayerNumber();
 		
-		Agent.Setup(GameSocket);
-		this.map = new Map(GameSocket);
-		
-		map.Setup();
+		this.Map = new Map(GameSocket, Verbose);
+
+		Agent.Setup(GameSocket, Map);
+		Map.Setup();
 		
 		if(Verbose)
 		{
-			map.PrintMap();
+			Map.PrintMap();
 		}
 	}
 	
