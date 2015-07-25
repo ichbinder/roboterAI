@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import client.utils.Vector2Float;
 import client.utils.Vector2Int;
 import lenz.htw.zaip.net.NetworkClient;
 
@@ -101,6 +102,16 @@ public class Map {
 				Queue.add(Field);
 			}
 		}
+	}
+	
+	public Vector2Float GetPlayerPosition(int PlayerID, int BotID)
+	{
+		Vector2Float Position = new Vector2Float(gameSocket.getX(PlayerID, BotID), gameSocket.getY(PlayerID, BotID));
+		Position.AddInPlace(new Vector2Float(1,1));
+		Position.MultiplyInPlace(0.5f);
+		Position.MultiplyInPlace(MAP_SIZE);
+		
+		return Position;
 	}
 	
 	public void PrintMap()
