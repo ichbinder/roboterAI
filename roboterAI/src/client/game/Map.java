@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 
 import client.utils.Vector2Float;
 import client.utils.Vector2Int;
@@ -112,6 +113,26 @@ public class Map {
 		Position.MultiplyInPlace(MAP_SIZE);
 		
 		return Position;
+	}
+	
+	public Vector2Float GetRandomWalkablePoint(Random Random)
+	{
+		Vector2Float NewDestination = new Vector2Float();
+		
+		do
+		{
+			NewDestination.X = Random.nextFloat() * (MAP_SIZE - 1);
+			NewDestination.Y = Random.nextFloat() * (MAP_SIZE - 1);
+		} while(!IsWalkable(NewDestination));
+		
+		return NewDestination;
+	}
+	
+	public boolean IsWalkable(Vector2Float Position)
+	{
+		Vector2Int Field = new Vector2Int(Position);
+		
+		return (Map[Field.X][Field.Y] != -1);
 	}
 	
 	public void PrintMap()

@@ -21,6 +21,12 @@ public class Vector2Int {
 		this.Y = Y;
 	}
 	
+	public Vector2Int(Vector2Float other)
+	{
+		this.X = Math.round(other.X);
+		this.Y = Math.round(other.Y);
+	}
+	
 	public boolean equals(Object other)
 	{
 		if(other == this)

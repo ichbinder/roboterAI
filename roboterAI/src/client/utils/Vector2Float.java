@@ -80,6 +80,11 @@ public class Vector2Float {
 		return this;
 	}
 	
+	public float Length()
+	{
+		return (float) Math.sqrt(X*X + Y*Y);
+	}
+	
 	public String toString()
 	{
 		return "(" + X + ", " + Y + ")";
