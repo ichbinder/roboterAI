@@ -151,7 +151,7 @@ public class Map {
 		}
 		System.out.println(zeile);
 		
-		for (int i = 0; i < MAP_SIZE; i++) {
+		for (int i = MAP_SIZE - 1; i >= 0; i--) {
 			zeile = String.format("%2d", i) + " |";
 			for (int j = 0; j < MAP_SIZE; j++) {
 				if(Map[j][i] < 0) {
