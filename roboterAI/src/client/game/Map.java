@@ -145,17 +145,29 @@ public class Map {
 	
 	private void PrintMap(int[][] Map)
 	{
-		String zeile = "";
+		String zeile = "    ";
 		for (int i = 0; i < MAP_SIZE; i++) {
-			zeile = "";
+			zeile += " " + String.format("%2d", i);
+		}
+		System.out.println(zeile);
+		
+		for (int i = 0; i < MAP_SIZE; i++) {
+			zeile = String.format("%2d", i) + " |";
 			for (int j = 0; j < MAP_SIZE; j++) {
-				if(Map[i][j] < 0) {
+				if(Map[j][i] < 0) {
 					zeile += " -1";
 				} else {
 					zeile += "  0";
 				}
 			}
+			zeile += "| " + String.format("%2d", i);
 			System.out.println(zeile);
 		}
+		
+		zeile = "    ";
+		for (int i = 0; i < MAP_SIZE; i++) {
+			zeile += " " + String.format("%2d", i);
+		}
+		System.out.println(zeile);
 	}
 }
