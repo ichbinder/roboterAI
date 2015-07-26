@@ -5,7 +5,7 @@ import client.game.Map;
 import client.utils.Vector2Float;
 
 public interface IRoboterAgent {
-	static enum RoboterType { Normal, BigOne, Plotter };
+	static enum RoboterType { Plotter, Normal, BigOne };
 	
 	void Setup(NetworkClient GameSocket, Map Map, int RoboterID);
 	void GoTo(Vector2Float Destination);

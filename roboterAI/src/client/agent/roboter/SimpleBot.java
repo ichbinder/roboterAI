@@ -95,13 +95,13 @@ public class SimpleBot implements IRoboterAgent {
 		switch(RoboterID)
 		{
 			case 0:
-				return client.agent.roboter.IRoboterAgent.RoboterType.Normal;
-			case 1:
-				return client.agent.roboter.IRoboterAgent.RoboterType.BigOne;
-			case 2:
 				return client.agent.roboter.IRoboterAgent.RoboterType.Plotter;
-			default:
+			case 1:
 				return client.agent.roboter.IRoboterAgent.RoboterType.Normal;
+			case 2:
+				return client.agent.roboter.IRoboterAgent.RoboterType.BigOne;
+			default:
+				return client.agent.roboter.IRoboterAgent.RoboterType.Plotter;
 		}
 	}
 
