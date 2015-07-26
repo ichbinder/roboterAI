@@ -130,9 +130,12 @@ public class Map {
 	
 	public boolean IsWalkable(Vector2Float Position)
 	{
-		Vector2Int Field = new Vector2Int(Position);
-		
-		return (Map[Field.X][Field.Y] != -1);
+		return IsWalkable(new Vector2Int(Position));
+	}
+	
+	public boolean IsWalkable(Vector2Int Position)
+	{
+		return (Map[Position.X][Position.Y] != -1);
 	}
 	
 	public void PrintMap()
