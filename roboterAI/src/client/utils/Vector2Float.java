@@ -89,4 +89,11 @@ public class Vector2Float {
 	{
 		return "(" + X + ", " + Y + ")";
 	}
+	
+	public Vector2Float Normalize()
+	{
+		this.MultiplyInPlace(1/this.Length());
+		
+		return this;
+	}
 }
