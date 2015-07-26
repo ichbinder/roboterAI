@@ -44,21 +44,10 @@ public class SimplePathfinder implements IPathfinder {
 		Vector2Int EndField = new Vector2Int(Destination);
 		Vector2Int Steps = new Vector2Int();
 		
-
-		System.out.println("Start: " + Start);
-		System.out.println("Destination: " + Destination);
-		System.out.println("Direction: " + Direction);
-		System.out.println("StepDirection: " + StepDirection);
-		System.out.println("StartingIntersections: " + StartingIntersections);
-		System.out.println("StartField: " + StartField);
-		System.out.println("EndField: " + EndField);
-		
 		while(!CurrentField.equals(EndField))
 		{			
 			LineScaleToIntersection.X = CalculateLineScale(Start.X, Direction.X, StartingIntersections.X + Steps.X * StepDirection.X);
 			LineScaleToIntersection.Y = CalculateLineScale(Start.Y, Direction.Y, StartingIntersections.Y + Steps.Y * StepDirection.Y);
-
-			System.out.println("LineScaleToIntersection: " + LineScaleToIntersection);
 			
 			if(LineScaleToIntersection.X > LineScaleToIntersection.Y)
 			{
@@ -72,7 +61,6 @@ public class SimplePathfinder implements IPathfinder {
 			CurrentField = new Vector2Int(Start);
 			CurrentField.X += Steps.X * StepDirection.X;
 			CurrentField.Y += Steps.Y * StepDirection.Y;
-			System.out.println("Checking: " + CurrentField);
 			
 			if(!Map.IsWalkable(CurrentField))
 			{
