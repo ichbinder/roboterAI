@@ -12,16 +12,15 @@ import client.utils.Vector2Int;
 
 public class SimpleBot implements IRoboterAgent {
 	
-	private NetworkClient GameSocket;
-	private Map Map;
-	private int RoboterID;
-	private RoboterType RoboterType;
+	protected NetworkClient GameSocket;
+	protected Map Map;
+	protected int RoboterID;
 	
-	private IPathfinder Pathfinder = null;
+	protected IPathfinder Pathfinder = null;
 	
-	private List<Vector2Float> Path = null;
+	protected List<Vector2Float> Path = null;
 	
-	private float LastDistance = Float.POSITIVE_INFINITY;
+	protected float LastDistance = Float.POSITIVE_INFINITY;
 	
 	public void Setup(NetworkClient GameSocket, Map Map, int RoboterID) 
 	{
@@ -77,7 +76,7 @@ public class SimpleBot implements IRoboterAgent {
 		}
 	}
 	
-	private void SetDirectionTowards(Vector2Float NextPoint)
+	protected void SetDirectionTowards(Vector2Float NextPoint)
 	{
 		Vector2Float CurrentPosition = GetPosition();
 		Vector2Float Direction = NextPoint.Subtract(CurrentPosition);

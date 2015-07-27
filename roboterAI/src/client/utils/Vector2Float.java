@@ -21,6 +21,12 @@ public class Vector2Float {
 		this.Y = Y;
 	}
 
+	public Vector2Float(Vector2Float other)
+	{
+		this.X = other.X;
+		this.Y = other.Y;
+	}
+	
 	public Vector2Float(Vector2Int other)
 	{
 		this.X = (float)other.X;
@@ -101,5 +107,33 @@ public class Vector2Float {
 		this.MultiplyInPlace(1/this.Length());
 		
 		return this;
+	}
+
+	public Vector2Float RotateRight()
+	{
+		float tmp = this.X;
+		this.X = this.Y;
+		this.Y = -tmp;
+
+		return this;
+	}
+	
+	public Vector2Float RightRotation()
+	{
+		return new Vector2Float(this.Y, -this.X);
+	}
+
+	public Vector2Float RotateLeft()
+	{
+		float tmp = this.Y;
+		this.Y = this.X;
+		this.X = -tmp;
+
+		return this;
+	}
+
+	public Vector2Float LeftRotation()
+	{
+		return new Vector2Float(-this.Y, this.X);
 	}
 }

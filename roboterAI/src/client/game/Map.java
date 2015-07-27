@@ -137,6 +137,11 @@ public class Map {
 	{
 		return (Map[Position.X][Position.Y] != -1);
 	}
+
+	public boolean IsMyColor(Vector2Float Position)
+	{
+		return IsMyColor(new Vector2Int(Position));
+	}
 	
 	public boolean IsMyColor(Vector2Int Position)
 	{
