@@ -1,7 +1,10 @@
 package client.game.pathfinding;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Vector;
 
 import client.game.Map;
 import client.utils.Vector2Float;
@@ -30,6 +33,83 @@ public class SimplePathfinder implements IPathfinder {
 		Path.add(Destination);
 		
 		return Path;
+	}
+	
+	private List<Vector2Int> Dijkstra(Vector2Int Start, Vector2Int Destination)
+	{
+		List<PathfindingNode> OpenNodes = new Vector<PathfindingNode>();
+		List<Vector2Int> ClosedNodes = new Vector<Vector2Int>();
+		
+		OpenNodes.add(new PathfindingNode(Start, Destination));
+		
+		while(!OpenNodes.isEmpty())
+		{
+			PathfindingNode CurrentNode = OpenNodes.get(0);
+			OpenNodes.remove(0);
+			
+			if(((Destination != null) && (CurrentNode.Position.equals(Destination))) || ((Destination == null) && (!Map.IsMyColor(CurrentNode.Position))))
+			{
+				return MakePathList(CurrentNode);
+			}
+			
+			AddNode(OpenNodes, ClosedNodes, CurrentNode, CurrentNode.Position.Add(Vector2Int.Up), Destination);
+			AddNode(OpenNodes, ClosedNodes, CurrentNode, CurrentNode.Position.Add(Vector2Int.Left), Destination);
+			AddNode(OpenNodes, ClosedNodes, CurrentNode, CurrentNode.Position.Add(Vector2Int.Down), Destination);
+			AddNode(OpenNodes, ClosedNodes, CurrentNode, CurrentNode.Position.Add(Vector2Int.Right), Destination);
+			
+			ClosedNodes.add(CurrentNode.Position);
+		}
+		
+		return null;
+	}
+	
+	private List<Vector2Int> MakePathList(PathfindingNode Node)
+	{
+		List<Vector2Int> Path = new LinkedList<Vector2Int>();
+		while(Node != null)
+		{
+			Path.add(0, Node.Position);
+			Node = Node.Previous;
+		} 
+		
+		return Path;
+	}
+	
+	private void AddNode(List<PathfindingNode> OpenNodes, List<Vector2Int> ClosedNodes, PathfindingNode Parent, Vector2Int Position, Vector2Int Destination)
+	{
+		if(!Map.IsWalkable(Position))
+		{
+			return;
+		}
+		
+		if(ClosedNodes.contains(Position))
+		{
+			return;
+		}
+		
+		float CostMultiplier = Map.IsMyColor(Position) ? 2.f : 1.0f;
+		
+		PathfindingNode NewNode = new PathfindingNode(Position, Destination);
+		NewNode.Previous = Parent;
+		NewNode.CostSoFar = Parent.CostSoFar + (Position.Substract(Parent.Position).Length() * CostMultiplier);
+		
+		float NewNodeValue = NewNode.GetValue();
+		boolean Inserted = false;
+		
+		
+		for(int i = 0; i < OpenNodes.size(); i++)
+		{
+			if(NewNodeValue < OpenNodes.get(i).GetValue())
+			{
+				Inserted = true;
+				OpenNodes.add(i, NewNode);
+			}
+		}
+		
+		if(!Inserted)
+		{
+			OpenNodes.add(NewNode);
+		}
 	}
 	
 	public Vector2Int CheckPathForObstacle(Vector2Float Start, Vector2Float Destination)
@@ -127,5 +207,6 @@ public class SimplePathfinder implements IPathfinder {
 			return Float.POSITIVE_INFINITY;
 		}
 	}
+	
 
 }
