@@ -3,6 +3,7 @@ package client.agent;
 import java.util.Random;
 
 import lenz.htw.zaip.net.NetworkClient;
+import client.agent.roboter.CircleBot;
 import client.agent.roboter.IRoboterAgent;
 import client.agent.roboter.SimpleBot;
 import client.game.Map;
@@ -15,8 +16,8 @@ public class TacticsAgent implements IAgent {
 	private Random Random = new Random();
 
 	private IRoboterAgent Plotter = new SimpleBot();
-	private IRoboterAgent Normal = new SimpleBot();
-	private IRoboterAgent BigOne = new SimpleBot();
+	private IRoboterAgent Normal = new CircleBot();
+	private IRoboterAgent BigOne = new CircleBot();
 	
 	public void Setup(NetworkClient GameSocket, Map Map) {
 		this.GameSocket = GameSocket;
@@ -28,13 +29,14 @@ public class TacticsAgent implements IAgent {
 	}
 
 	public void Tick() {
-
+		
 		if(Plotter.IsIdle())
 		{
 			Vector2Float NewDestination = Map.GetRandomWalkablePoint(Random);
 			Plotter.GoTo(NewDestination);
 		}
-
+		
+		
 		Plotter.Tick();
 		Normal.Tick();
 		BigOne.Tick();

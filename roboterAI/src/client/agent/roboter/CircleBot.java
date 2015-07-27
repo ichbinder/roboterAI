@@ -10,6 +10,7 @@ public class CircleBot extends SimpleBot implements IRoboterAgent {
 
 	public void Tick()
 	{
+		this.Verbose = true;
 		if(!super.IsIdle())
 		{
 			super.Tick();
@@ -33,7 +34,8 @@ public class CircleBot extends SimpleBot implements IRoboterAgent {
 		
 		for(int i = 0; i < 4; i++)
 		{
-			if(!Map.IsMyColor(CurrentPostion.Add(NewDirection)))
+			Vector2Float TestField = CurrentPostion.Add(NewDirection);
+			if(Map.IsWalkable(TestField) && (!Map.IsMyColor(TestField)))
 			{	
 				SearchNewPlace = false;
 				break;
@@ -52,12 +54,12 @@ public class CircleBot extends SimpleBot implements IRoboterAgent {
 			CurrentDirection = NewDirection;
 			Vector2Int NewField = new Vector2Int(CurrentPostion.Add(NewDirection));
 			Vector2Float NewTarget = new Vector2Float(NewField);
-			NewTarget.AddInPlace(CurrentDirection.Multiply(0.45f).LeftRotation());
+			NewTarget.AddInPlace(CurrentDirection.Multiply(0.25f).LeftRotation());
 			GoTo(NewTarget);
 		}
 		else
 		{
-			this.Path = Pathfinder.GetPath(CurrentPostion, null);
+			SetPath(Pathfinder.GetPath(CurrentPostion, null));		
 			DirectionDirtyFlag = true;
 		}	
 	}

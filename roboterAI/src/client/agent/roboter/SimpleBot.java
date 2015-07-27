@@ -20,6 +20,8 @@ public class SimpleBot implements IRoboterAgent {
 	
 	protected List<Vector2Float> Path = null;
 	
+	protected boolean Verbose = false;
+	
 	protected float LastDistance = Float.POSITIVE_INFINITY;
 	
 	public void Setup(NetworkClient GameSocket, Map Map, int RoboterID) 
@@ -61,14 +63,23 @@ public class SimpleBot implements IRoboterAgent {
 
 		if(((NextPointField == CurrentField) && (Distance < 0.2f)) || (Distance > LastDistance))
 		{
-			System.out.println(RoboterID + " reached Waypoint.");
+			if(Verbose)
+			{
+				System.out.println(RoboterID + " reached Waypoint " + NextPoint + " at " + CurrentPosition);
+				System.out.println(" CurrentField" + CurrentField + " - NextPointField " + NextPointField + " - DIstance " + Distance + " - LastDistance " + LastDistance);
+			}
 			Path.remove(0);
 			if(!IsIdle())
 			{
+				System.out.println(RoboterID + " next point " + Path.get(0));
 				SetDirectionTowards(Path.get(0));
 			}
 			else
 			{
+				if(Verbose)
+				{
+					System.out.println(RoboterID + " now idle");
+				}
 				GameSocket.setMoveDirection(RoboterID, 0.f, 0.f);
 			}
 		}
@@ -97,7 +108,12 @@ public class SimpleBot implements IRoboterAgent {
 	public void GoTo(Vector2Float Destination) 
 	{
 		System.out.println(RoboterID + " from " + GetPosition() + " to " + Destination);
-		Path = Pathfinder.GetPath(GetPosition(), Destination);
+		SetPath(Pathfinder.GetPath(GetPosition(), Destination));
+	}
+	
+	public void SetPath(List<Vector2Float> Path)
+	{
+		this.Path = Path;
 		if(Path != null)
 		{
 			SetDirectionTowards(Path.get(0));
