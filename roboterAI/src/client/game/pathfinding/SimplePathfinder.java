@@ -43,9 +43,10 @@ public class SimplePathfinder implements IPathfinder {
 		OpenNodes.add(new PathfindingNode(Start, Destination));
 		
 		while(!OpenNodes.isEmpty())
-		{
+		{			
 			PathfindingNode CurrentNode = OpenNodes.get(0);
 			OpenNodes.remove(0);
+			ClosedNodes.add(CurrentNode.Position);
 			
 			if(((Destination != null) && (CurrentNode.Position.equals(Destination))) || ((Destination == null) && (!Map.IsMyColor(CurrentNode.Position))))
 			{
@@ -57,7 +58,6 @@ public class SimplePathfinder implements IPathfinder {
 			AddNode(OpenNodes, ClosedNodes, CurrentNode, CurrentNode.Position.Add(Vector2Int.Down), Destination);
 			AddNode(OpenNodes, ClosedNodes, CurrentNode, CurrentNode.Position.Add(Vector2Int.Right), Destination);
 			
-			ClosedNodes.add(CurrentNode.Position);
 		}
 		
 		return null;
@@ -99,7 +99,15 @@ public class SimplePathfinder implements IPathfinder {
 		
 		for(int i = 0; i < OpenNodes.size(); i++)
 		{
-			if(NewNodeValue < OpenNodes.get(i).GetValue())
+			PathfindingNode Node = OpenNodes.get(i);
+			
+			if(Node.equals(NewNode))
+			{
+				Inserted = true;
+				break;
+			}
+			
+			if(NewNodeValue < Node.GetValue())
 			{
 				Inserted = true;
 				OpenNodes.add(i, NewNode);

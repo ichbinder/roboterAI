@@ -20,6 +20,12 @@ public class Vector2Float {
 		this.X = X;
 		this.Y = Y;
 	}
+
+	public Vector2Float(Vector2Int other)
+	{
+		this.X = (float)X;
+		this.Y = (float)Y;
+	}
 	
 	public boolean equals(Object other)
 	{

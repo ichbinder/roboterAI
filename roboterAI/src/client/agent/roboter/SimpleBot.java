@@ -75,7 +75,7 @@ public class SimpleBot implements IRoboterAgent {
 
 	public void GoTo(Vector2Float Destination) 
 	{
-		System.out.println(RoboterID + " set target " + Destination);
+		System.out.println(RoboterID + " from " + GetPosition() + " to " + Destination);
 		Path = Pathfinder.GetPath(GetPosition(), Destination);
 		SetDirectionTowards(Path.get(0));
 	}
