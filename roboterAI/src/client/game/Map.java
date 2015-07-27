@@ -138,6 +138,11 @@ public class Map {
 		return (Map[Position.X][Position.Y] != -1);
 	}
 	
+	public boolean IsMyColor(Vector2Int Position)
+	{
+		return (gameSocket.getBoard(Position.X, Position.Y) == (gameSocket.getMyPlayerNumber() + 1));
+	}
+	
 	public void PrintMap()
 	{
 		PrintMap(Map);
