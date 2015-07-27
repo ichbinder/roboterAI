@@ -46,7 +46,7 @@ public class SimpleBot implements IRoboterAgent {
 
 		float Distance = NextPoint.Subtract(CurrentPosition).Length();
 		
-		if(Distance > LastDistance)
+		if((Distance < 0.2f) || (Distance > LastDistance))
 		{
 			System.out.println(RoboterID + " reached Waypoint.");
 			Path.remove(0);
