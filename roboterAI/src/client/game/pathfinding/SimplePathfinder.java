@@ -21,21 +21,39 @@ public class SimplePathfinder implements IPathfinder {
 
 	public List<Vector2Float> GetPath(Vector2Float Start, Vector2Float Destination) 
 	{
-		List<Vector2Float> Path = new ArrayList<Vector2Float>();
+		List<Vector2Float> Path;
+		Vector2Int SimpleTest = CheckPathForObstacle(Start, Destination);
 		
-		Vector2Int Obstacle = CheckPathForObstacle(Start, Destination);
-		
-		if(Obstacle != null)
+		if(SimpleTest == null)
 		{
-			System.out.println("Obstacle on Path from " + Start +" to " + Destination + " at " + Obstacle);
+			Path = new ArrayList<Vector2Float>();
+			Path.add(Destination);
+			return Path;			
 		}
 		
-		Path.add(Destination);
+		List<Vector2Float> DjikstraPath = Dijkstra(new Vector2Int(Start), new Vector2Int(Destination));
+		
+		DjikstraPath.remove(0);
+		DjikstraPath.add(0,  Start);
+		DjikstraPath.remove(DjikstraPath.size() - 1);
+		DjikstraPath.add(Destination);
+
+		
+		Path =  SimplifyPath(Start, Destination, DjikstraPath);
+		Path.remove(0);
+		
+		String Buffer = "Path: ";
+		
+		for(int i = 0; i < Path.size(); i++)
+		{
+			Buffer += " - " + Path.get(i);
+		}
+		System.out.println(Buffer);
 		
 		return Path;
 	}
 	
-	private List<Vector2Int> Dijkstra(Vector2Int Start, Vector2Int Destination)
+	private List<Vector2Float> Dijkstra(Vector2Int Start, Vector2Int Destination)
 	{
 		List<PathfindingNode> OpenNodes = new Vector<PathfindingNode>();
 		List<Vector2Int> ClosedNodes = new Vector<Vector2Int>();
@@ -63,12 +81,12 @@ public class SimplePathfinder implements IPathfinder {
 		return null;
 	}
 	
-	private List<Vector2Int> MakePathList(PathfindingNode Node)
+	private List<Vector2Float> MakePathList(PathfindingNode Node)
 	{
-		List<Vector2Int> Path = new LinkedList<Vector2Int>();
+		List<Vector2Float> Path = new LinkedList<Vector2Float>();
 		while(Node != null)
 		{
-			Path.add(0, Node.Position);
+			Path.add(0, new Vector2Float(Node.Position));
 			Node = Node.Previous;
 		} 
 		
@@ -111,6 +129,7 @@ public class SimplePathfinder implements IPathfinder {
 			{
 				Inserted = true;
 				OpenNodes.add(i, NewNode);
+				break;
 			}
 		}
 		
@@ -118,6 +137,38 @@ public class SimplePathfinder implements IPathfinder {
 		{
 			OpenNodes.add(NewNode);
 		}
+	}
+	
+	private List<Vector2Float> SimplifyPath(Vector2Float Start, Vector2Float Destination, List<Vector2Float> Path)
+	{
+		List<Vector2Float> SimplifiedPath = new ArrayList<Vector2Float>();
+		SimplifiedPath.add(Destination);
+		
+		Vector2Float CurrentDestination = Destination;
+		//while(start != destination)
+		//for start to destination
+			//Check for Obstacle
+				//Add to Simplified path & break
+		
+		int CurrentDestinationIndex = Path.size() - 1;
+
+		while(!Start.equals(CurrentDestination))
+		{
+			for(int i = 0; i < CurrentDestinationIndex; i++)
+			{
+				Vector2Float CurrentStart = Path.get(i);
+				Vector2Int Obstacle = CheckPathForObstacle(CurrentStart, CurrentDestination);
+				if(Obstacle == null)
+				{
+					SimplifiedPath.add(0, CurrentStart);
+					CurrentDestination = CurrentStart;
+					CurrentDestinationIndex = i;
+					break;
+				}
+			}
+		}
+		
+		return SimplifiedPath;
 	}
 	
 	public Vector2Int CheckPathForObstacle(Vector2Float Start, Vector2Float Destination)

@@ -23,8 +23,8 @@ public class Vector2Float {
 
 	public Vector2Float(Vector2Int other)
 	{
-		this.X = (float)X;
-		this.Y = (float)Y;
+		this.X = (float)other.X;
+		this.Y = (float)other.Y;
 	}
 	
 	public boolean equals(Object other)
@@ -44,7 +44,7 @@ public class Vector2Float {
 			return false;
 		}
 		
-		Vector2Int otherVector = (Vector2Int)other;
+		Vector2Float otherVector = (Vector2Float)other;
 		
 		return ((this.X == otherVector.X) && (this.Y == otherVector.Y));
 	}
