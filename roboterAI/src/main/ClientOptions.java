@@ -7,7 +7,7 @@ import com.beust.jcommander.Parameters;
 public class ClientOptions
 {
 	@Parameter(names = {"-n", "--name"}, description = "Client Name")
-	private String	name = "Client";
+	private String	name = "Random";
 	
 	@Parameter(names = {"-s", "--start"}, required = true, description = "Start Client")
 	private boolean	start;
