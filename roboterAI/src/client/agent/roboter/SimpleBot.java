@@ -22,7 +22,6 @@ public class SimpleBot implements IRoboterAgent {
 	private List<Vector2Float> Path = null;
 	
 	private float LastDistance = Float.POSITIVE_INFINITY;
-	private Vector2Int LastField;
 	
 	public void Setup(NetworkClient GameSocket, Map Map, int RoboterID) 
 	{
@@ -30,8 +29,6 @@ public class SimpleBot implements IRoboterAgent {
 		this.Map = Map;
 		this.RoboterID = RoboterID;
 		this.Pathfinder = new SimplePathfinder(Map);
-		
-		LastField = new Vector2Int(GetPosition());
 	}
 
 	public void Tick() 
@@ -42,6 +39,21 @@ public class SimpleBot implements IRoboterAgent {
 		}
 
 		Vector2Float CurrentPosition = GetPosition();
+		
+		if(GetRoboterType() == RoboterType.Plotter)
+		{
+			if(!Map.IsMyColor(new Vector2Int(CurrentPosition)))
+			{
+				SetDirectionTowards(CurrentPosition);
+				return;
+			}
+			else
+			{
+				SetDirectionTowards(Path.get(0));
+			}
+		}
+		
+		
 		Vector2Float NextPoint = Path.get(0);
 
 		float Distance = NextPoint.Subtract(CurrentPosition).Length();
