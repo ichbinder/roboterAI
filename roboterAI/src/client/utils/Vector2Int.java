@@ -53,6 +53,16 @@ public class Vector2Int {
 	{
 		return new Vector2Int(this.X + other.X, this.Y + other.Y);
 	}
+
+	public Vector2Int Substract(Vector2Int other)
+	{
+		return new Vector2Int(this.X - other.X, this.Y - other.Y);
+	}
+
+	public float Length()
+	{
+		return (float) Math.sqrt(X*X + Y*Y);
+	}
 	
 	public String toString()
 	{
