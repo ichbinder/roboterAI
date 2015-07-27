@@ -22,24 +22,41 @@ public class SimplePathfinder implements IPathfinder {
 	public List<Vector2Float> GetPath(Vector2Float Start, Vector2Float Destination) 
 	{
 		List<Vector2Float> Path;
-		Vector2Int SimpleTest = CheckPathForObstacle(Start, Destination);
 		
-		if(SimpleTest == null)
+		if(Destination != null)
 		{
-			Path = new ArrayList<Vector2Float>();
-			Path.add(Destination);
-			return Path;			
+			Vector2Int SimpleTest = CheckPathForObstacle(Start, Destination);
+			
+			if(SimpleTest == null)
+			{
+				Path = new ArrayList<Vector2Float>();
+				Path.add(Destination);
+				return Path;			
+			}
 		}
 		
-		List<Vector2Float> DjikstraPath = Dijkstra(new Vector2Int(Start), new Vector2Int(Destination));
+		Vector2Int DestinationField = Destination == null ? null : new Vector2Int(Destination);
+		List<Vector2Float> DjikstraPath = Dijkstra(new Vector2Int(Start), DestinationField);
+		
+		if(DjikstraPath == null)
+		{
+			return null;
+		}
 		
 		DjikstraPath.remove(0);
 		DjikstraPath.add(0,  Start);
-		DjikstraPath.remove(DjikstraPath.size() - 1);
-		DjikstraPath.add(Destination);
-
 		
-		Path =  SimplifyPath(Start, Destination, DjikstraPath);
+		if(Destination != null)
+		{
+			DjikstraPath.remove(DjikstraPath.size() - 1);
+			DjikstraPath.add(Destination);
+		}
+		else
+		{
+			Destination = DjikstraPath.get(DjikstraPath.size() - 1); 
+		}
+		
+		Path = SimplifyPath(Start, Destination, DjikstraPath);
 		Path.remove(0);
 		
 		String Buffer = "Path: ";

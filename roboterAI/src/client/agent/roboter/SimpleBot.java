@@ -43,21 +43,23 @@ public class SimpleBot implements IRoboterAgent {
 		{
 			if(!Map.IsMyColor(new Vector2Int(CurrentPosition)))
 			{
-				SetDirectionTowards(CurrentPosition);
+				SetDirectionTowards(CurrentPosition, true);
 				return;
 			}
 			else
 			{
-				SetDirectionTowards(Path.get(0));
+				SetDirectionTowards(Path.get(0), true);
 			}
 		}
 		
 		
 		Vector2Float NextPoint = Path.get(0);
+		Vector2Int NextPointField = new Vector2Int(NextPoint);
+		Vector2Int CurrentField = new Vector2Int(CurrentPosition);
 
 		float Distance = NextPoint.Subtract(CurrentPosition).Length();
-		
-		if((Distance < 0.2f) || (Distance > LastDistance))
+
+		if(((NextPointField == CurrentField) && (Distance < 0.2f)) || (Distance > LastDistance))
 		{
 			System.out.println(RoboterID + " reached Waypoint.");
 			Path.remove(0);
@@ -75,20 +77,31 @@ public class SimpleBot implements IRoboterAgent {
 			LastDistance = Distance;
 		}
 	}
-	
+
 	protected void SetDirectionTowards(Vector2Float NextPoint)
+	{
+		SetDirectionTowards(NextPoint, false);
+	}
+	
+	protected void SetDirectionTowards(Vector2Float NextPoint, boolean KeepLastDistance)
 	{
 		Vector2Float CurrentPosition = GetPosition();
 		Vector2Float Direction = NextPoint.Subtract(CurrentPosition);
 		GameSocket.setMoveDirection(RoboterID, Direction.X, Direction.Y);
-		LastDistance = Float.POSITIVE_INFINITY;
+		if(!KeepLastDistance)
+		{
+			LastDistance = Float.POSITIVE_INFINITY;
+		}
 	}
 
 	public void GoTo(Vector2Float Destination) 
 	{
 		System.out.println(RoboterID + " from " + GetPosition() + " to " + Destination);
 		Path = Pathfinder.GetPath(GetPosition(), Destination);
-		SetDirectionTowards(Path.get(0));
+		if(Path != null)
+		{
+			SetDirectionTowards(Path.get(0));
+		}
 	}
 
 	public boolean IsIdle() 
